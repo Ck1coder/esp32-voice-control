@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ESP32 Voice Control</title>
+</head>
+<body>
+
+<h2>ESP32 Voice Control</h2>
+
+<button id="start">Start Voice Input</button>
+<p id="out">Say: "light on", "light off", "unlock", etc</p>
+
+<script>
+window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!window.SpeechRecognition) {
+  document.getElementById("out").innerText = "Speech Recognition not supported on this browser.";
+}
+
+const recog = new SpeechRecognition();
+recog.lang = "en-US";
+recog.interimResults = false;
+
+document.getElementById("start").onclick = () => {
+  recog.start();
+};
+
+recog.onresult = function(event) {
+  const text = event.results[0][0].transcript.toLowerCase();
+  document.getElementById('out').innerText = "You said: " + text;
+
+  // Send command to ESP32 (replace with your IP)
+  fetch("http://192.168.4.1/command?text=" + encodeURIComponent(text));
+};
+</script>
+
+</body>
+</html>
