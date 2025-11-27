@@ -31,7 +31,7 @@ recog.onresult = function(event) {
   document.getElementById('out').innerText = "You said: " + text;
 
   // Send command to ESP32 (replace with your IP)
-  fetch("http://192.168.4.1/command?text=" + encodeURIComponent(text));
+  fetch("http://192.168.0.24/command?text=" + encodeURIComponent(text));
 };
 </script>
 
